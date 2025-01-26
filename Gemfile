@@ -8,6 +8,7 @@ ruby '3.4.1'
 gem 'aasm'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', require: false
+gem 'friendly_id'
 gem 'gl_command', git: 'https://github.com/givelively/gl_command.git'
 gem 'haml-rails'
 gem 'importmap-rails'
@@ -26,6 +27,7 @@ gem 'stimulus-rails'
 gem 'tailwindcss-rails'
 gem "thruster", require: false
 gem 'turbo-rails'
+gem 'ulid'
 gem 'view_component'
 
 group :development, :test do

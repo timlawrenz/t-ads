@@ -19,11 +19,11 @@ RSpec.describe '/campaigns', type: :request do
   # Campaign. As you add validations to Campaign, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    { name: 'MyString' }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { name: nil }
   end
 
   describe 'GET /index' do
@@ -88,14 +88,14 @@ RSpec.describe '/campaigns', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { name: 'My New String' }
       end
 
       it 'updates the requested campaign' do
         campaign = Campaign.create! valid_attributes
         patch campaign_url(campaign), params: { campaign: new_attributes }
         campaign.reload
-        skip('Add assertions for updated state')
+        expect(campaign.name).to eq('My New String')
       end
 
       it 'redirects to the campaign' do

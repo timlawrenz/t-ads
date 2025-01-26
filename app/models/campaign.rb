@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Campaign < ApplicationRecord
   extend FriendlyId
   before_create :set_ulid
@@ -6,7 +8,7 @@ class Campaign < ApplicationRecord
   validates :name, presence: true
 
   private
-  
+
   def set_ulid
     self.id = ULID.generate
   end

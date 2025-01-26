@@ -12,20 +12,20 @@ gem 'friendly_id'
 gem 'gl_command', git: 'https://github.com/givelively/gl_command.git'
 gem 'haml-rails'
 gem 'importmap-rails'
-gem "kamal", require: false
+gem 'kamal', require: false
 gem 'oj'
 gem 'pg', '~> 1.1'
-gem "propshaft"
+gem 'propshaft'
 gem 'puma'
 gem 'rails'
 gem 'sentry-rails'
 gem 'sentry-ruby'
-gem "solid_cache"
-gem "solid_queue"
-gem "solid_cable"
+gem 'solid_cable'
+gem 'solid_cache'
+gem 'solid_queue'
 gem 'stimulus-rails'
 gem 'tailwindcss-rails'
-gem "thruster", require: false
+gem 'thruster', require: false
 gem 'turbo-rails'
 gem 'ulid'
 gem 'view_component'
@@ -65,5 +65,3 @@ group :test do
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
 end
-
-

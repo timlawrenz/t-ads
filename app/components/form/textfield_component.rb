@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Form
-  class LabelComponent < ViewComponent::Base
+  class TextfieldComponent < ViewComponent::Base
     def initialize(form:, field:)
       @form = form
       @field = field

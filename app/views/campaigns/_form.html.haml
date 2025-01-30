@@ -6,9 +6,11 @@
         - @campaign.errors.full_messages.each do |message|
           %li= message
 
-  .field
-    = render Form::LabelComponent.new(form: f, for_id: :campaign_name) do
-      Name
-    = f.text_field :name
+  = render Form::InputgroupComponent.new do |component|
+    - component.with_label do
+      - render Form::LabelComponent.new(form: f, field: :name) do
+        Name
+    - component.with_input do
+      - render Form::TextfieldComponent.new(form: f, field: :name)
   .actions
     = f.submit 'Save'

@@ -1,21 +1,18 @@
-%h1 Listing campaigns
-
-%table
+= render PageheaderComponent.new(title: 'Campaigns')
+%table.min-w-full.divide-y.divide-gray-300
   %thead
     %tr
-      %th Name
-      %th
-      %th
-      %th
+      = render Table::ThComponent.new(title: 'Name')
+      = render Table::ThComponent.new
 
   %tbody
     - @campaigns.each do |campaign|
       %tr
-        %td= campaign.name
-        %td= link_to 'Show', campaign
-        %td= link_to 'Edit', edit_campaign_path(campaign)
-        %td= link_to 'Destroy', campaign, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
+        = render Table::TdComponent.new do
+          = campaign.name
+        = render Table::TdComponent.new do
+          = link_to 'Show', campaign
+          = link_to 'Edit', edit_campaign_path(campaign)
+          = link_to 'Destroy', campaign, method: :delete, data: { confirm: 'Are you sure?' }
 
 = link_to 'New Campaign', new_campaign_path

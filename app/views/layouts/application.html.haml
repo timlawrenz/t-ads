@@ -1,5 +1,5 @@
 !!! 5
-%html.h-full.bg-white
+%html.antialiased.dark
   %head
     %title T::Ads
     %meta{ name: :viewport, content: 'width=device-width,initial-scale=1' }
@@ -17,11 +17,8 @@
     = stylesheet_link_tag :app, 'data-turbo-track': :reload
     = javascript_importmap_tags
 
-  %body.h-full.font-mono.antialiased
-    %div
-      .lg:fixed.lg:inset-y-0.lg:z-50.lg:flex.lg:w-72.lg:flex-col
-        .flex.grow.flex-col.gap-y-5.overflow-y-auto.bg-gray-900.px-6
+  %body.bg-zinc-50.dark:bg-zinc-950.font-mono.p-8
 
-    %main.py-10-.lg:pl-72
+    %main.grow.p-6.lg:rounded-lg.lg:bg-white.lg:p-10.lg:ring-1.lg:shadow-xs.dark:lg:bg-zinc-900{ class: 'lg:ring-zinc-950/5 dark:lg:ring-white/10' }
       .px-4.sm:px-6.lg:px-8.p-8
         = yield

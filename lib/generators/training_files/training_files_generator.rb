@@ -21,7 +21,7 @@ class TrainingFilesGenerator < Rails::Generators::NamedBase
   def copy_source_images
     campaign.source_images.each do |image|
       destination_path = target_folder.join(image.filename.to_s)
-      create_file(destination_path, data: image.download)
+      write_image_file(destination_path, image)
     end
   end
 
@@ -29,8 +29,21 @@ class TrainingFilesGenerator < Rails::Generators::NamedBase
     Campaign::SOURCE_IMAGE_VARIANTS.each do |variant_name, variant_settings|
       campaign.source_images.each do |image|
         destination_path = target_folder.join("#{variant_name}_#{image.filename}")
-        create_file(destination_path, data: image.representation(variant_settings).download)
+        image = image.representation(variant_settings)
+        write_image_file(destination_path, image)
       end
     end
+  end
+
+  private
+
+  def write_image_file(destination_path, image)
+    create_file(destination_path, data: image.download)
+    create_text_file(destination_path)
+  end
+
+  def create_text_file(destination_path)
+    text_destination_path = "#{File.dirname(destination_path)}/#{File.basename(destination_path, '.*')}.txt"
+    create_file(text_destination_path, data: campaign.text)
   end
 end

@@ -27,6 +27,7 @@ gem 'solid_cache'
 gem 'solid_queue'
 gem 'stimulus-rails'
 gem 'tailwindcss-rails'
+gem 't-catalyst', git: 'https://github.com/timlawrenz/t-catalyst.git'
 gem 'thruster', require: false
 gem 'turbo-rails'
 gem 'ulid'

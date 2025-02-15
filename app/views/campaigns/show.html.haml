@@ -6,6 +6,15 @@
   %b Name:
   = @campaign.name
 
+  = @campaign.source_images.count
+
+  <ul>
+  - @campaign.source_images.each do |source_image|
+    %li
+      = image_tag source_image, width: 100
+      = image_tag source_image.representation(flip: :horizontal), width: 100
+  </ul>
+
 = link_to 'Edit', edit_campaign_path(@campaign)
 \|
 = link_to 'Back', campaigns_path

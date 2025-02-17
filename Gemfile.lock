@@ -8,9 +8,11 @@ GIT
 
 GIT
   remote: https://github.com/timlawrenz/t-catalyst.git
-  revision: 52d90f694b95bdf6d50656501fc3c386f989bb73
+  revision: 334e50b70db28367a77a092ca1894aabc318e9fa
   specs:
     t-catalyst (0.1.0)
+      tailwindcss-rails
+      view_component
 
 GEM
   remote: https://rubygems.org/

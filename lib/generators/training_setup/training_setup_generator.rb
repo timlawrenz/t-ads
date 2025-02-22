@@ -3,6 +3,8 @@
 class TrainingSetupGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
+  argument :name, type: :string, required: true, desc: 'Campaign name'
+
   FOLDERS = %w[data output lora_config].freeze
 
   def campaign
@@ -45,6 +47,24 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
     end
   end
 
+  def copy_lora_config
+    template 'lora_config.yaml', lora_config_folder.join("#{campaign.name}.yaml")
+  end
+
+  def customize_lora_config
+    placeholders = {
+      'CAMPAIGN_NAME_PLACEHOLDER' => campaign.name,
+      'CAMPAIGN_OUTPUT_FOLDER_PLACEHOLDER' => output_folder,
+      'CAMPAIGN_DATA_FOLDER_PLACEHOLDER' => data_folder,
+      'STEPS_PLACEHOLDER' => 500,
+      'LORA_RANK_PLACEHOLDER' => 16
+    }
+
+    placeholders.each do |placeholder, value|
+      gsub_file config_file, placeholder, value.to_s
+    end
+  end
+
   private
 
   def write_image_file(destination_path, image)
@@ -55,5 +75,9 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
   def write_text_file(destination_path)
     text_destination_path = "#{File.dirname(destination_path)}/#{File.basename(destination_path, '.*')}.txt"
     create_file(text_destination_path, campaign.text)
+  end
+
+  def config_file
+    @config_file ||= lora_config_folder.join("#{campaign.name}.yaml")
   end
 end

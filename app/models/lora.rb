@@ -45,16 +45,15 @@ class Lora
   def create_samples
     client_id = SecureRandom.uuid_v4
     prompt = JSON.parse(COMFYUI_WORKFLOW_TEMPLATE.read)
-    prompt['82']['inputs']['text'] = "A young woman wearing a white #{@campaign_name}."
+    prompt['82']['inputs']['text'] = "A young woman wearing a #{@campaign.text}."
     prompt['83']['inputs']['lora_1']['lora'] = @campaign_name
-    prompt['85']['inputs']['filename_prefix'] = "ads/loras/samples/#{@campaign_name}"
+    prompt['85']['inputs']['filename_prefix'] = "ads/loras/samples/#{@campaign_name}/sample"
     data = { client_id:, prompt: }
 
     uri = URI(COMFYUI_URL)
     request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
     request.body = data.to_json
     http = Net::HTTP.new(uri.host, uri.port)
-    response = http.request(request)
-    puts response.inspect
+    http.request(request)
   end
 end

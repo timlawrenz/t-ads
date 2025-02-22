@@ -31,7 +31,11 @@ class Lora
     @config_file ||= config_folder.join("#{@campaign_name}.yaml")
   end
 
+  def lora_file
+    @lora_file ||= output_folder.join("#{@campaign_name}.safetensors")
+  end
+
   def move_to_comfy_ui
-    # FileUtils.cp_r(@campaign.training_setup_folder, TARGET_COMFY_UI_FOLDER)
+    FileUtils.cp(lora_file, TARGET_COMFY_UI_FOLDER)
   end
 end

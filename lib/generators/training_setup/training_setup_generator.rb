@@ -3,6 +3,8 @@
 class TrainingSetupGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
+  FOLDERS = %w[data output lora_config].freeze
+
   def campaign
     @campaign ||= Campaign.find_by(name:)
     raise 'Campaign not found' unless @campaign
@@ -14,21 +16,21 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
     @target_folder ||= Rails.public_path.join('training_setup', campaign.name)
   end
 
-  def create_target_folder
-    empty_directory(target_folder)
+  FOLDERS.each do |folder|
+    define_method(:"#{folder}_folder") do
+      target_folder.join(folder)
+    end
   end
 
-  def create_output_folder
-    empty_directory(target_folder.join('output'))
-  end
-
-  def create_lora_config_folder
-    empty_directory(target_folder.join('lora_config'))
+  def create_sub_folders
+    FOLDERS.each do |folder|
+      empty_directory(target_folder.join(folder))
+    end
   end
 
   def copy_source_images
     campaign.source_images.each do |image|
-      destination_path = target_folder.join(image.filename.to_s)
+      destination_path = data_folder.join(image.filename.to_s)
       write_image_file(destination_path, image)
     end
   end
@@ -36,7 +38,7 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
   def copy_source_image_variants
     Campaign::SOURCE_IMAGE_VARIANTS.each do |variant_name, variant_settings|
       campaign.source_images.each do |image|
-        destination_path = target_folder.join("#{variant_name}_#{image.filename}")
+        destination_path = data_folder.join("#{variant_name}_#{image.filename}")
         image = image.representation(variant_settings).processed
         write_image_file(destination_path, image)
       end

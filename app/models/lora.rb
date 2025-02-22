@@ -20,7 +20,7 @@ class Lora
   end
 
   def steps
-    500
+    3000
   end
 
   def rank

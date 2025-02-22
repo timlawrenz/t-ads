@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class Lora
-  TARGET_COMFY_UI_FOLDER = '/mnt/essdee/ComfyUI/models/loras/flux/ads/'
   TRAINING_SETUP_FOLDERS = %w[data output config].freeze
+
+  TARGET_COMFYUI_FOLDER = '/mnt/essdee/ComfyUI/models/loras/flux/ads/'
+  COMFYUI_WORKFLOW_TEMPLATE = Rails.root.join('lib', 'tasks', 'comfyui_workflow_template.json')
+  COMFYUI_URL = 'http://localhost:8188/prompt'
 
   def initialize(campaign)
     @campaign = campaign
@@ -32,10 +35,26 @@ class Lora
   end
 
   def lora_file
-    @lora_file ||= output_folder.join("#{@campaign_name}.safetensors")
+    @lora_file ||= output_folder.join("#{@campaign_name}/#{@campaign_name}.safetensors")
   end
 
-  def move_to_comfy_ui
-    FileUtils.cp(lora_file, TARGET_COMFY_UI_FOLDER)
+  def copy_to_comfyui
+    FileUtils.cp(lora_file, TARGET_COMFYUI_FOLDER)
+  end
+
+  def create_samples
+    client_id = SecureRandom.uuid_v4
+    prompt = JSON.parse(COMFYUI_WORKFLOW_TEMPLATE.read)
+    prompt['82']['inputs']['text'] = "A young woman wearing a white #{@campaign_name}."
+    prompt['83']['inputs']['lora_1']['lora'] = @campaign_name
+    prompt['85']['inputs']['filename_prefix'] = "ads/loras/samples/#{@campaign_name}"
+    data = { client_id:, prompt: }
+
+    uri = URI(COMFYUI_URL)
+    request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
+    request.body = data.to_json
+    http = Net::HTTP.new(uri.host, uri.port)
+    response = http.request(request)
+    puts response.inspect
   end
 end

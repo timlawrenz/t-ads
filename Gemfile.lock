@@ -6,14 +6,6 @@ GIT
       activerecord (>= 3.2.0)
       gl_exception_notifier (>= 1.0.2)
 
-GIT
-  remote: https://github.com/timlawrenz/t-catalyst.git
-  revision: 334e50b70db28367a77a092ca1894aabc318e9fa
-  specs:
-    t-catalyst (0.1.0)
-      tailwindcss-rails
-      view_component
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -556,7 +548,6 @@ DEPENDENCIES
   spring-commands-rspec
   spring-commands-rubocop
   stimulus-rails
-  t-catalyst!
   tailwindcss-rails
   thruster
   timecop

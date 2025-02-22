@@ -5,8 +5,6 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, desc: 'Campaign name'
 
-  FOLDERS = %w[data output lora_config].freeze
-
   def campaign
     @campaign ||= Campaign.find_by(name:)
     raise 'Campaign not found' unless @campaign
@@ -14,25 +12,23 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
     @campaign
   end
 
-  def target_folder
-    @target_folder ||= Rails.public_path.join('training_setup', campaign.name)
+  def lora
+    @lora ||= Lora.new(campaign)
   end
 
-  FOLDERS.each do |folder|
-    define_method(:"#{folder}_folder") do
-      target_folder.join(folder)
-    end
+  def target_folder
+    @target_folder ||= lora.target_folder
   end
 
   def create_sub_folders
-    FOLDERS.each do |folder|
+    Lora::TRAINING_SETUP_FOLDERS.each do |folder|
       empty_directory(target_folder.join(folder))
     end
   end
 
   def copy_source_images
     campaign.source_images.each do |image|
-      destination_path = data_folder.join(image.filename.to_s)
+      destination_path = lora.data_folder.join(image.filename.to_s)
       write_image_file(destination_path, image)
     end
   end
@@ -40,7 +36,7 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
   def copy_source_image_variants
     Campaign::SOURCE_IMAGE_VARIANTS.each do |variant_name, variant_settings|
       campaign.source_images.each do |image|
-        destination_path = data_folder.join("#{variant_name}_#{image.filename}")
+        destination_path = lora.data_folder.join("#{variant_name}_#{image.filename}")
         image = image.representation(variant_settings).processed
         write_image_file(destination_path, image)
       end
@@ -48,20 +44,20 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
   end
 
   def copy_lora_config
-    template 'lora_config.yaml', lora_config_folder.join("#{campaign.name}.yaml")
+    template 'lora_config.yaml', lora.config_folder.join("#{campaign.name}.yaml")
   end
 
   def customize_lora_config
     placeholders = {
       'CAMPAIGN_NAME_PLACEHOLDER' => campaign.name,
-      'CAMPAIGN_OUTPUT_FOLDER_PLACEHOLDER' => output_folder,
-      'CAMPAIGN_DATA_FOLDER_PLACEHOLDER' => data_folder,
-      'STEPS_PLACEHOLDER' => 500,
-      'LORA_RANK_PLACEHOLDER' => 16
+      'CAMPAIGN_OUTPUT_FOLDER_PLACEHOLDER' => lora.output_folder,
+      'CAMPAIGN_DATA_FOLDER_PLACEHOLDER' => lora.data_folder,
+      'STEPS_PLACEHOLDER' => lora.steps,
+      'LORA_RANK_PLACEHOLDER' => lora.rank
     }
 
     placeholders.each do |placeholder, value|
-      gsub_file config_file, placeholder, value.to_s
+      gsub_file lora.config_file, placeholder, value.to_s
     end
   end
 
@@ -75,9 +71,5 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
   def write_text_file(destination_path)
     text_destination_path = "#{File.dirname(destination_path)}/#{File.basename(destination_path, '.*')}.txt"
     create_file(text_destination_path, campaign.text)
-  end
-
-  def config_file
-    @config_file ||= lora_config_folder.join("#{campaign.name}.yaml")
   end
 end

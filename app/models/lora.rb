@@ -34,12 +34,14 @@ class Lora
     @config_file ||= config_folder.join("#{@campaign_name}.yaml")
   end
 
-  def lora_file
-    @lora_file ||= output_folder.join("#{@campaign_name}/#{@campaign_name}.safetensors")
+  def lora_files
+    @lora_files ||= output_folder.join(@campaign_name).glob('*.safetensors')
   end
 
   def copy_to_comfyui
-    FileUtils.cp(lora_file, TARGET_COMFYUI_FOLDER)
+    lora_files.each do |lora_file|
+      FileUtils.cp(lora_file, TARGET_COMFYUI_FOLDER)
+    end
   end
 
   def create_samples

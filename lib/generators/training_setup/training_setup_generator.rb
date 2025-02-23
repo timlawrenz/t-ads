@@ -5,6 +5,15 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
 
   argument :name, type: :string, required: true, desc: 'Campaign name'
 
+  def config_placeholders
+    { 'CAMPAIGN_NAME_PLACEHOLDER' => campaign.name,
+      'CAMPAIGN_OUTPUT_FOLDER_PLACEHOLDER' => lora.output_folder,
+      'CAMPAIGN_DATA_FOLDER_PLACEHOLDER' => lora.data_folder,
+      'STEPS_PLACEHOLDER' => lora.steps,
+      'LORA_RANK_PLACEHOLDER' => lora.rank,
+      'LORA_TRIGGER_PLACEHOLDER' => campaign.text }
+  end
+
   def campaign
     @campaign ||= Campaign.find_by(name:)
     raise 'Campaign not found' unless @campaign
@@ -48,15 +57,7 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
   end
 
   def customize_lora_config
-    placeholders = {
-      'CAMPAIGN_NAME_PLACEHOLDER' => campaign.name,
-      'CAMPAIGN_OUTPUT_FOLDER_PLACEHOLDER' => lora.output_folder,
-      'CAMPAIGN_DATA_FOLDER_PLACEHOLDER' => lora.data_folder,
-      'STEPS_PLACEHOLDER' => lora.steps,
-      'LORA_RANK_PLACEHOLDER' => lora.rank
-    }
-
-    placeholders.each do |placeholder, value|
+    config_placeholders.each do |placeholder, value|
       gsub_file lora.config_file, placeholder, value.to_s
     end
   end

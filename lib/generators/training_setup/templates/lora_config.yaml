@@ -72,15 +72,15 @@ config:
         width: 820
         height: 1024
         prompts:
-          - "a photo of a person wearing a [trigger], full body shot, studio lighting"
-          - "a model showcasing a [trigger] on a runway, high fashion"
-          - "a young woman wearing a [trigger] and smiling, outdoor setting, natural light"
-          - "a woman in a [trigger], casual style, standing in a city street"
-          - "close-up shot of a young woman wearing a [trigger], detailed fabric texture"
-          - "a woman wearing a [trigger] and jeans, walking in a park"
-          - "a stylish woman in a [trigger] and a hat, posing for a photo"
-          - "a portrait of a older lady wearing a [trigger], soft lighting"
-          - "full body shot of a model in a [trigger], white background"
+          - "a photo of a person wearing a LORA_TRIGGER_PLACEHOLDER, full body shot, studio lighting"
+          - "a model showcasing a LORA_TRIGGER_PLACEHOLDER on a runway, high fashion"
+          - "a young woman wearing a LORA_TRIGGER_PLACEHOLDER and smiling, outdoor setting, natural light"
+          - "a woman in a LORA_TRIGGER_PLACEHOLDER, casual style, standing in a city street"
+          - "close-up shot of a young woman wearing a LORA_TRIGGER_PLACEHOLDER, detailed fabric texture"
+          - "a woman wearing a LORA_TRIGGER_PLACEHOLDER and jeans, walking in a park"
+          - "a stylish woman in a LORA_TRIGGER_PLACEHOLDER and a hat, posing for a photo"
+          - "a portrait of a older lady wearing a LORA_TRIGGER_PLACEHOLDER, soft lighting"
+          - "full body shot of a model in a LORA_TRIGGER_PLACEHOLDER, white background"
         neg: ""  # not used on flux
         seed: 4134844129
         walk_seed: false

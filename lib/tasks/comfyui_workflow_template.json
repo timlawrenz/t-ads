@@ -115,6 +115,11 @@
       },
       "lora_1": {
         "on": true,
+        "lora": "flux/sarah1a3.safetensors",
+        "strength": 1
+      },
+      "lora_2": {
+        "on": true,
         "lora": "LORA_PATH_PLACEHOLDER",
         "strength": 1
       },

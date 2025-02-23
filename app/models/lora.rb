@@ -4,7 +4,7 @@ class Lora
   TRAINING_SETUP_FOLDERS = %w[data output config].freeze
 
   TARGET_COMFYUI_FOLDER = '/mnt/essdee/ComfyUI/models/loras/flux/ads/'
-  COMFYUI_WORKFLOW_TEMPLATE = Rails.root.join('lib', 'tasks', 'comfyui_workflow_template.json')
+  COMFYUI_WORKFLOW_TEMPLATE = Rails.root.join('lib/tasks/comfyui_workflow_template.json')
   COMFYUI_URL = 'http://localhost:8188/prompt'
 
   def initialize(campaign)
@@ -23,7 +23,7 @@ class Lora
   end
 
   def steps
-    3000
+    12000
   end
 
   def rank
@@ -35,7 +35,7 @@ class Lora
   end
 
   def lora_files
-    @lora_files ||= output_folder.join(@campaign_name).glob('*.safetensors')
+    output_folder.join(@campaign_name).glob('*.safetensors')
   end
 
   def copy_to_comfyui
@@ -44,14 +44,47 @@ class Lora
     end
   end
 
+  def prompts
+    postfix = "Busty, slim, small frame, petite, sarah1a3, very small waist, long neck, smooth torso, flat tummy, full HD, cinematic"
+    locations = [
+      'at the beach with her body turned to the side',
+      'on the porch of a modern beach villa',
+      'in the living room of a modern beach villa',
+      ''
+    ]
+    activities = [
+      'standing',
+      'sitting',
+      'lounging',
+      ''
+    ]
+    locations.map do |location|
+      activities.map do |activity|
+        "The image is a portrait of a young woman with long brunette hair. She is #{activity} #{location}. The woman is wearing #{@campaign.text}. The light is soft, it's golden hour. #{postfix}"
+      end
+    end.flatten
+  end
+
   def create_samples
     client_id = SecureRandom.uuid_v4
-    prompt = JSON.parse(COMFYUI_WORKFLOW_TEMPLATE.read)
-    prompt['82']['inputs']['text'] = "A young woman wearing a #{@campaign.text}."
-    prompt['83']['inputs']['lora_1']['lora'] = @campaign_name
-    prompt['85']['inputs']['filename_prefix'] = "ads/loras/samples/#{@campaign_name}/sample"
-    data = { client_id:, prompt: }
 
+    template = JSON.parse(COMFYUI_WORKFLOW_TEMPLATE.read)
+
+    lora_files.each do |lora_file|
+      lora_name = File.basename(lora_file, '.safetensors')
+      template['83']['inputs']['lora_2']['lora'] = lora_name
+
+      prompts.each_with_index do |prompt, index|
+        template['85']['inputs']['filename_prefix'] = "ads/loras/samples/#{@campaign_name}/#{DateTime.now.to_date.to_fs}/#{lora_name}/prompt_#{index}"
+        template['82']['inputs']['text'] = prompt
+        data = { client_id:, prompt: template }
+        puts "prompt #{index}: #{prompt}"
+        send_sample_request(data)
+      end
+    end
+  end
+
+  def send_sample_request(data)
     uri = URI(COMFYUI_URL)
     request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
     request.body = data.to_json

@@ -77,8 +77,8 @@ config:
           - "a young woman wearing a LORA_TRIGGER_PLACEHOLDER and smiling, outdoor setting, natural light"
           - "a woman in a LORA_TRIGGER_PLACEHOLDER, casual style, standing in a city street"
           - "close-up shot of a young woman wearing a LORA_TRIGGER_PLACEHOLDER, detailed fabric texture"
-          - "a woman wearing a LORA_TRIGGER_PLACEHOLDER and jeans, walking in a park"
-          - "a stylish woman in a LORA_TRIGGER_PLACEHOLDER and a hat, posing for a photo"
+          - "a woman wearing a LORA_TRIGGER_PLACEHOLDER, walking in a park"
+          - "a stylish woman in a LORA_TRIGGER_PLACEHOLDER, posing for a photo"
           - "a portrait of a older lady wearing a LORA_TRIGGER_PLACEHOLDER, soft lighting"
           - "full body shot of a model in a LORA_TRIGGER_PLACEHOLDER, white background"
         neg: ""  # not used on flux

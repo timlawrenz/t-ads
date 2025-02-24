@@ -23,7 +23,7 @@ class Lora
   end
 
   def steps
-    12000
+    6000
   end
 
   def rank
@@ -56,6 +56,7 @@ class Lora
       'standing',
       'sitting',
       'lounging',
+      'throwing a pose for a photo like a model',
       ''
     ]
     locations.map do |location|

@@ -11,7 +11,7 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
       'CAMPAIGN_DATA_FOLDER_PLACEHOLDER' => lora.data_folder,
       'STEPS_PLACEHOLDER' => lora.steps,
       'LORA_RANK_PLACEHOLDER' => lora.rank,
-      'LORA_TRIGGER_PLACEHOLDER' => campaign.text }
+      'LORA_TRIGGER_PLACEHOLDER' => campaign.description }
   end
 
   def campaign
@@ -71,6 +71,6 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
 
   def write_text_file(destination_path)
     text_destination_path = "#{File.dirname(destination_path)}/#{File.basename(destination_path, '.*')}.txt"
-    create_file(text_destination_path, campaign.text)
+    create_file(text_destination_path, campaign.description)
   end
 end

@@ -61,7 +61,7 @@ class Lora
     ]
     locations.map do |location|
       activities.map do |activity|
-        "The image is a portrait of a young woman with long brunette hair. She is #{activity} #{location}. The woman is wearing #{@campaign.text}. The light is soft, it's golden hour. #{postfix}"
+        "The image is a portrait of a young woman with long brunette hair. She is #{activity} #{location}. The woman is wearing #{@campaign.description}. The light is soft, it's golden hour. #{postfix}"
       end
     end.flatten
   end

@@ -265,7 +265,7 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.3-x86_64-linux-gnu)
       racc (~> 1.4)
-    oj (3.16.9)
+    oj (3.16.10)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
     optparse (0.6.0)

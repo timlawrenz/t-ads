@@ -81,4 +81,10 @@ class Campaign < ApplicationRecord
   has_many_attached :source_images
 
   validates :name, presence: true
+
+  def source_image_urls
+    source_images.map do |source_image|
+      Rails.application.routes.url_helpers.rails_representation_url(source_image, host: 'localhost')
+    end
+  end
 end

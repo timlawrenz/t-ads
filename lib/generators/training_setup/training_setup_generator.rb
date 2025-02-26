@@ -48,6 +48,9 @@ class TrainingSetupGenerator < Rails::Generators::NamedBase
         destination_path = lora.data_folder.join("#{variant_name}_#{image.filename}")
         image = image.representation(variant_settings).processed
         write_image_file(destination_path, image)
+      rescue
+        puts "Error processing image #{image.filename} with variant #{variant_name}"
+        next
       end
     end
   end

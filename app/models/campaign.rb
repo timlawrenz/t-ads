@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Campaign < ApplicationRecord
-  include ActiveModel::Serializers::JSON
   include Ulidable
-
 
   SOURCE_IMAGE_VARIANT_DEFAULTS = { resize_to_limit: [1024, 1024], format: :jpg }.freeze
   SOURCE_IMAGE_VARIANTS = {
@@ -88,5 +86,14 @@ class Campaign < ApplicationRecord
     source_images.map do |source_image|
       Rails.application.routes.url_helpers.rails_representation_url(source_image)
     end
+  end
+
+  def augmented_image_urls
+    Campaign::SOURCE_IMAGE_VARIANTS.map do |_, variant_settings|
+      source_images.map do |image|
+        image = image.representation(variant_settings)
+        Rails.application.routes.url_helpers.rails_representation_url(image)
+      end
+    end.flatten
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-unless Rails.production?
+unless Rails.env.production?
   class TrainingSetupGenerator < Rails::Generators::NamedBase
     source_root File.expand_path('templates', __dir__)
 
@@ -69,6 +69,7 @@ unless Rails.production?
     private
 
     def write_image_file(destination_path, image)
+      destination_path = "#{destination_path}.jpg" unless File.extname(destination_path) == '.jpg'
       create_file(destination_path, image.download)
       write_text_file(destination_path)
     end

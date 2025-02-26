@@ -92,6 +92,5 @@ end
 
 Rails.application.routes.default_url_options = {
   host: 'a1-sarah-a1-3b7b2a76983d.herokuapp.com',
-  port: 3000,
   protocol: 'https'
 }

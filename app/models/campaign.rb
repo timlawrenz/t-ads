@@ -86,7 +86,7 @@ class Campaign < ApplicationRecord
 
   def source_image_urls
     source_images.map do |source_image|
-      Rails.application.routes.url_helpers.rails_representation_url(source_image)
+      Rails.application.routes.url_helpers.rails_representation_url(source_image, only_path: true)
     end
   end
 end

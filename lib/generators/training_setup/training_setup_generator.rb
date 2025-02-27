@@ -49,8 +49,10 @@ unless Rails.env.production?
           destination_path = lora.data_folder.join("#{variant_name}_#{image.filename}")
           image = image.representation(variant_settings).processed
           write_image_file(destination_path, image)
-        rescue
-          puts "Error processing image #{image.filename} with variant #{variant_name}"
+        rescue StandardError
+          Rails.logger.debug do
+            "Error processing image #{image.filename} with variant #{variant_name}"
+          end
           next
         end
       end
@@ -75,7 +77,8 @@ unless Rails.env.production?
     end
 
     def write_text_file(destination_path)
-      text_destination_path = "#{File.dirname(destination_path)}/#{File.basename(destination_path, '.*')}.txt"
+      text_destination_path = "#{File.dirname(destination_path)}/#{File.basename(destination_path,
+                                                                                 '.*')}.txt"
       create_file(text_destination_path, campaign.description)
     end
   end

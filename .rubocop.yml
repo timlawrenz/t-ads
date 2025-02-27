@@ -2,6 +2,10 @@ plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
+require:
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-rspec_rails
 
 AllCops:
   TargetRubyVersion: 3.2.4

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Campaigns', type: :request do
@@ -9,7 +11,7 @@ RSpec.describe 'Api::V1::Campaigns', type: :request do
   end
 
   describe 'GET /show' do
-    let(:campaign) { FactoryBot.create(:campaign) }
+    let(:campaign) { create(:campaign) }
 
     it 'returns http success' do
       get "/api/v1/campaigns/#{campaign.id}"
@@ -18,7 +20,7 @@ RSpec.describe 'Api::V1::Campaigns', type: :request do
   end
 
   describe 'GET /lora_config' do
-    let(:campaign) { FactoryBot.create(:campaign) }
+    let(:campaign) { create(:campaign) }
 
     it 'returns http success' do
       get "/api/v1/campaigns/#{campaign.id}/lora_config.yaml"

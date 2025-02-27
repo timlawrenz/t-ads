@@ -45,7 +45,7 @@ class Lora
   end
 
   def prompts
-    postfix = "Busty, slim, small frame, petite, sarah1a3, very small waist, long neck, smooth torso, flat tummy, full HD, cinematic"
+    postfix = 'Busty, slim, small frame, petite, sarah1a3, very small waist, long neck, smooth torso, flat tummy, full HD, cinematic'
     locations = [
       'at the beach with her body turned to the side',
       'on the porch of a modern beach villa',
@@ -76,10 +76,11 @@ class Lora
       template['83']['inputs']['lora_2']['lora'] = lora_name
 
       prompts.each_with_index do |prompt, index|
-        template['85']['inputs']['filename_prefix'] = "ads/loras/samples/#{@campaign_name}/#{DateTime.now.to_date.to_fs}/#{lora_name}/prompt_#{index}"
+        template['85']['inputs']['filename_prefix'] =
+          "ads/loras/samples/#{@campaign_name}/#{DateTime.now.to_date.to_fs}/#{lora_name}/prompt_#{index}"
         template['82']['inputs']['text'] = prompt
         data = { client_id:, prompt: template }
-        puts "prompt #{index}: #{prompt}"
+        Rails.logger.debug { "prompt #{index}: #{prompt}" }
         send_sample_request(data)
       end
     end

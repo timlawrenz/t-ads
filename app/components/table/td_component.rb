@@ -1,4 +1,6 @@
 # frozen_string_literal: true
 
-class Table::TdComponent < ViewComponent::Base
+module Table
+  class TdComponent < ViewComponent::Base
+  end
 end

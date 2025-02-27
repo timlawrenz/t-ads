@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe Campaign, type: :model do
+RSpec.describe Campaign do
   describe 'with a valid factory' do
-    subject(:campaign) { FactoryBot.create(:campaign) }
+    subject(:campaign) { create(:campaign) }
 
     it 'creates a ULID on create' do
       expect(campaign.id).to be_present
@@ -23,7 +23,7 @@ RSpec.describe Campaign, type: :model do
   end
 
   describe 'source_images' do
-    subject(:campaign) { FactoryBot.create(:campaign) }
+    subject(:campaign) { create(:campaign) }
 
     it 'can attach a source image' do
       campaign.source_images.attach(io: Rails.root.join('spec/fixtures/image.jpg').open,
@@ -34,7 +34,7 @@ RSpec.describe Campaign, type: :model do
   end
 
   describe '#source_image_urls' do
-    subject(:campaign) { FactoryBot.create(:campaign, :with_images) }
+    subject(:campaign) { create(:campaign, :with_images) }
 
     it 'returns an array of URLs' do
       expect(campaign.source_image_urls).to all(start_with('http'))
@@ -42,7 +42,7 @@ RSpec.describe Campaign, type: :model do
   end
 
   describe '#augmented_image_urls' do
-    subject(:campaign) { FactoryBot.create(:campaign, :with_images) }
+    subject(:campaign) { create(:campaign, :with_images) }
 
     it 'returns an array of URLs' do
       expect(campaign.augmented_image_urls).to all(start_with('http'))

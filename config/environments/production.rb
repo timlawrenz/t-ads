@@ -89,8 +89,6 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
 
-
 Rails.application.routes.default_url_options = {
-  host: 'a1-sarah-a1-3b7b2a76983d.herokuapp.com',
-  protocol: 'https'
+  host: 'a1-sarah-a1-3b7b2a76983d.herokuapp.com', protocol: 'https'
 }

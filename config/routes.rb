@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :campaigns, only: [:index, :show]
+      resources :campaigns, only: [:index, :show] do
+        get :lora_config, on: :member
+      end
     end
   end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

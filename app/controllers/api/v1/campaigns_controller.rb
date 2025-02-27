@@ -10,6 +10,11 @@ module Api
       def show
         render json: Campaign.friendly.find(params[:id])
       end
+
+      def lora_config
+        @campaign = ::Campaign.friendly.find(params[:id])
+        @lora = Lora.new(@campaign)
+      end
     end
   end
 end

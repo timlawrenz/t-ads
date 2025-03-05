@@ -2,19 +2,19 @@
 
 namespace :lora do
   desc 'move lora to ComfyUI destination folder'
-  task :copy_to_comfyui, [:campaign_id] => :environment do |_, args|
-    campaign_id = args[:campaign_id]
-    campaign = Campaign.find_by(name: campaign_id)
-    raise 'Campaign not found' unless campaign
+  task :copy_to_comfyui, [:lora_id] => :environment do |_, args|
+    lora_id = args[:lora_id]
+    lora = Lora.friendly.find(lora_id)
+    raise 'Lora not found' unless lora
 
-    Lora.new(campaign).copy_to_comfyui
+    lora.copy_to_comfyui
   end
 
   task :create_samples, [:campaign_id] => :environment do |_, args|
-    campaign_id = args[:campaign_id]
-    campaign = Campaign.find_by(name: campaign_id)
-    raise 'Campaign not found' unless campaign
+    lora_id = args[:lora_id]
+    lora = Lora.friendly.find(lora_id)
+    raise 'Lora not found' unless lora
 
-    Lora.new(campaign).create_samples
+    lora.create_samples
   end
 end

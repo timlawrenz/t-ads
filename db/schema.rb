@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_05_014225) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_05_140618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_05_014225) do
     t.string "slug", null: false
     t.text "description"
     t.index ["slug"], name: "index_campaigns_on_slug", unique: true
+  end
+
+  create_table "loras", id: { type: :string, limit: 26 }, force: :cascade do |t|
+    t.string "training_setup_id", limit: 26, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["training_setup_id"], name: "index_loras_on_training_setup_id"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -182,11 +189,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_05_014225) do
     t.float "network_dropout", default: 0.05, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["campaign_id"], name: "index_training_setups_on_campaign_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "loras", "training_setups"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

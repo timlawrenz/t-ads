@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
-class Lora
+class Lora < ApplicationRecord
   TRAINING_SETUP_FOLDERS = %w[data output config].freeze
 
   TARGET_COMFYUI_FOLDER = '/mnt/essdee/ComfyUI/models/loras/flux/ads/'
   COMFYUI_WORKFLOW_TEMPLATE = Rails.root.join('lib/tasks/comfyui_workflow_template.json')
   COMFYUI_URL = 'http://localhost:8188/prompt'
 
-  def initialize(campaign)
-    @campaign = campaign
-    @campaign_name = campaign.name
-  end
+  belongs_to :training_setup
+  has_one :campaign, through: :training_setup
 
   def target_folder
-    @target_folder ||= Rails.public_path.join('training_setup', @campaign_name)
+    @target_folder ||= Rails.public_path.join('training_setup', campaign.name)
   end
 
   TRAINING_SETUP_FOLDERS.each do |folder|
@@ -31,11 +29,11 @@ class Lora
   end
 
   def config_file
-    @config_file ||= config_folder.join("#{@campaign_name}.yaml")
+    @config_file ||= config_folder.join("#{campaign.name}.yaml")
   end
 
   def lora_files
-    output_folder.join(@campaign_name).glob('*.safetensors')
+    output_folder.join(campaign.name).glob('*.safetensors')
   end
 
   def copy_to_comfyui
@@ -77,7 +75,7 @@ class Lora
 
       prompts.each_with_index do |prompt, index|
         template['85']['inputs']['filename_prefix'] =
-          "ads/loras/samples/#{@campaign_name}/#{DateTime.now.to_date.to_fs}/#{lora_name}/prompt_#{index}"
+          "ads/loras/samples/#{campaign.name}/#{DateTime.now.to_date.to_fs}/#{lora_name}/prompt_#{index}"
         template['82']['inputs']['text'] = prompt
         data = { client_id:, prompt: template }
         Rails.logger.debug { "prompt #{index}: #{prompt}" }

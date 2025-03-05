@@ -79,6 +79,7 @@ class Campaign < ApplicationRecord
   }.freeze
 
   has_many :training_setups, dependent: :destroy
+  has_many :loras, through: :training_setups
   has_many_attached :source_images
 
   validates :name, presence: true
@@ -96,5 +97,9 @@ class Campaign < ApplicationRecord
         Rails.application.routes.url_helpers.rails_representation_url(image)
       end
     end.flatten
+  end
+
+  def target_folder
+    @target_folder ||= Rails.public_path.join('training_setup', name)
   end
 end

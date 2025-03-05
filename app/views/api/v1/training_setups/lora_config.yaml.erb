@@ -5,7 +5,7 @@ config:
   name: "<%= @campaign.name %>"
   process:
     - type: 'sd_trainer'
-      training_folder: "<%= @lora.output_folder %>"
+      training_folder: "<%= @training_setup.output_folder %>"
       device: cuda:0
       trigger_word: "<%= @campaign.name %>"
       network:
@@ -26,22 +26,23 @@ config:
         # images will automatically be resized and bucketed into the resolution specified
         # on windows, escape back slashes with another backslash so
         # "C:\\path\\to\\images\\folder"
-        - folder_path: "<%= @lora.data_folder %>"
+        - folder_path: "<%= @training_setup.data_folder %>"
           caption_ext: "txt"
-          caption_dropout_rate: 0.05  # will drop out the caption 5% of time
+          caption_dropout_rate: <%= @training_setup.network_dropout %>  # will drop out the caption 5% of time
           shuffle_tokens: false  # shuffle caption order, split by commas
           cache_latents_to_disk: true  # leave this true unless you know what you're doing
           resolution: [ 512, 768, 1024 ]  # flux enjoys multiple resolutions
       train:
         batch_size: 1
-        steps: <%= @lora.steps %> # total number of steps to train 500 - 4000 is a good range
+        steps: <%= @training_setup.training_steps %> # total number of steps to train 500 - 4000 is a good range
         gradient_accumulation_steps: 1
         train_unet: true
         train_text_encoder: false  # probably won't work with flux
         gradient_checkpointing: true  # need the on unless you have a ton of vram
-        noise_scheduler: "flowmatch" # for training only
+        noise_scheduler: "<%= @training_setup.sampler %>" # for training only
         optimizer: "adamw8bit"
         lr: 1e-4
+        lr: <%= @training_setup.learning_rate %>
         # uncomment this to skip the pre training sample
 #        skip_first_sample: true
         # uncomment to completely disable sampling
@@ -64,10 +65,10 @@ config:
         low_vram: true  # uncomment this if the GPU is connected to your monitors. It will use less vram to quantize, but is slower.
       lora_config:
         enabled: true
-        r: <%= @lora.rank %>
+        r: <%= @training_setup.r %>
 
       sample:
-        sampler: "flowmatch" # must match train.noise_scheduler
+        sampler: "<%= @training_setup.sampler %>" # must match train.noise_scheduler
         sample_every: 250 # sample every this many steps
         width: 820
         height: 1024

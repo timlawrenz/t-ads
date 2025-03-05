@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::Campaigns', type: :request do
+RSpec.describe 'Api::V1::Campaigns' do
   describe 'GET /index' do
     it 'returns http success' do
       get '/api/v1/campaigns'

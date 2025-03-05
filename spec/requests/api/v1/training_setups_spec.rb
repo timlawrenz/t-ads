@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::TrainingSetup', type: :request do
+RSpec.describe 'Api::V1::TrainingSetup' do
   let(:campaign) { create(:campaign) }
   let(:training_setup) { create(:training_setup, campaign:) }
 

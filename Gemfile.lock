@@ -561,6 +561,7 @@ DEPENDENCIES
   listen
   n_plus_one_control
   oj
+  parallel
   pg (~> 1.1)
   propshaft
   puma

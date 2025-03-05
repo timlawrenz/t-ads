@@ -3,6 +3,8 @@
 class TrainingSetup < ApplicationRecord
   include Ulidable
 
+  FOLDERS = %w[data output config].freeze
+
   belongs_to :campaign
   has_many :loras, dependent: :destroy
 
@@ -14,11 +16,13 @@ class TrainingSetup < ApplicationRecord
   validates :network_dropout, presence: true,
                               numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
-  def output_folder
-    @output_folder ||= campaign.target_folder.join('output')
+  def target_folder
+    @target_folder ||= campaign.target_folder.join(slug)
   end
 
-  def data_folder
-    @data_folder ||= campaign.target_folder.join('data')
+  FOLDERS.each do |folder|
+    define_method(:"#{folder}_folder") do
+      target_folder.join(folder)
+    end
   end
 end

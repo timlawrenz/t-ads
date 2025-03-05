@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Lora < ApplicationRecord
-  TRAINING_SETUP_FOLDERS = %w[data output config].freeze
-
   TARGET_COMFYUI_FOLDER = '/mnt/essdee/ComfyUI/models/loras/flux/ads/'
   COMFYUI_WORKFLOW_TEMPLATE = Rails.root.join('lib/tasks/comfyui_workflow_template.json')
   COMFYUI_URL = 'http://localhost:8188/prompt'
@@ -14,7 +12,7 @@ class Lora < ApplicationRecord
     @target_folder ||= Rails.public_path.join('training_setup', campaign.name)
   end
 
-  TRAINING_SETUP_FOLDERS.each do |folder|
+  TrainingSetup::FOLDERS.each do |folder|
     define_method(:"#{folder}_folder") do
       target_folder.join(folder)
     end

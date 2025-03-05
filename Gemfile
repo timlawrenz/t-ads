@@ -18,6 +18,7 @@ gem 'image_processing'
 gem 'importmap-rails'
 gem 'kamal', require: false
 gem 'oj'
+gem 'parallel'
 gem 'pg', '~> 1.1'
 gem 'propshaft'
 gem 'puma'

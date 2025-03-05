@@ -19,10 +19,12 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+local_production:
+  <<: *default
+  url: <%= ENV.fetch('LOCAL_PRODUCTION_DATABASE_URL') %>
 
 development:
   <<: *default
-  # url: <%= ENV["DATABASE_URL"] %>
   database: t_ads_development
 
   # To create additional roles in PostgreSQL see `$ createuser --help`.

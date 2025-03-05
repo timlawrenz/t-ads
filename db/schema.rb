@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_26_143637) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_05_014225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -172,6 +172,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_26_143637) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "training_setups", id: { type: :string, limit: 26 }, force: :cascade do |t|
+    t.string "campaign_id", limit: 26, null: false
+    t.integer "r", default: 16, null: false
+    t.float "learning_rate", default: 0.0001, null: false
+    t.integer "training_steps", default: 6000, null: false
+    t.string "sampler", default: "flowmatch", null: false
+    t.string "status", default: "pending", null: false
+    t.float "network_dropout", default: 0.05, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_training_setups_on_campaign_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
@@ -180,4 +193,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_26_143637) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "training_setups", "campaigns"
 end

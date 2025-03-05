@@ -78,6 +78,7 @@ class Campaign < ApplicationRecord
     rotate_left_by6_crop_by20_darken_by20: { rotate: -6, crop: [20, 20, 980, 980], subtract: 20 }
   }.freeze
 
+  has_many :training_setups, dependent: :destroy
   has_many_attached :source_images
 
   validates :name, presence: true

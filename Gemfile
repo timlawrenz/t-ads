@@ -40,6 +40,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'reek'
+  gem 'rspec-rails'
   gem 'timecop'
   gem 'webdrivers'
 end
@@ -47,7 +48,6 @@ end
 group :development do
   gem 'gl_lint', require: false
   gem 'listen'
-  gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-capybara', require: false
   gem 'rubocop-factory_bot', require: false
